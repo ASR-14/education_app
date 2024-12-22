@@ -1,5 +1,6 @@
 import 'package:education_app/core/res/colours.dart';
 import 'package:education_app/core/res/fonts.dart';
+import 'package:education_app/core/services/router.dart';
 import 'package:education_app/src/on_boarding/presentation/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Education App',
       theme: ThemeData(
         useMaterial3: true,
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSwatch(accentColor: Colours.primaryColour),
       ),
-      routes: {OnBoardingScreen.routeName: (_) => const OnBoardingScreen()},
+      onGenerateRoute: generateRoute,
     );
   }
 }
