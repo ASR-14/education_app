@@ -13,6 +13,58 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// subprojects {
+//     afterEvaluate { project ->
+//         if (project.hasProperty('android')) {
+//             project.android {
+//                 if (namespace == null) {
+//                     namespace project.group
+//                 }
+//             }
+//         }
+//     }
+// }
+
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0' // Updated to a newer version
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.0' // Google Services plugin
+        // Add any other classpath dependencies here
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
+}
+
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
+    android {
+            namespace 'com.eduapp.education_app'
+        }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 33 // Ensure this matches your project's compile SDK version
 }

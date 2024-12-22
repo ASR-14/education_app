@@ -1,3 +1,6 @@
+import 'package:education_app/core/res/colours.dart';
+import 'package:education_app/core/res/fonts.dart';
+import 'package:education_app/src/on_boarding/presentation/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,10 +15,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Education App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: Fonts.poppins,
+        appBarTheme: const AppBarTheme(
+          color: Colors.transparent,
+        ),
+        colorScheme: ColorScheme.fromSwatch(accentColor: Colours.primaryColour),
       ),
+      routes: {OnBoardingScreen.routeName: (_) => const OnBoardingScreen()},
     );
   }
 }
-
