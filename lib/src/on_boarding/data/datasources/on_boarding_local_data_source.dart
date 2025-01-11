@@ -26,6 +26,10 @@ class OnBoardingLocalDataSrcImpl extends OnBoardingLocalDataSource {
 
   @override
   Future<bool> checkIfUserIsFirstTimer() async {
-    return _prefs.getBool(kFirstTimerKey) ?? true;
+    try {
+      return _prefs.getBool(kFirstTimerKey) ?? true;
+    } catch (e) {
+      throw CacheException(message: e.toString());
+    }
   }
 }

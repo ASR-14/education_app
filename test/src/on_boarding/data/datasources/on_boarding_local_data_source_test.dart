@@ -74,6 +74,19 @@ void main() {
           verifyNoMoreInteractions(prefs);
         },
       );
+
+      test(
+        'should throw a [CacheException] when there is an error retrieving the data',
+        () async {
+          when(() => prefs.getBool(any())).thenThrow(Exception());
+
+          final call = localDataSource.checkIfUserIsFirstTimer();
+
+          expect(call, throwsA(isA<CacheException>()));
+          verify(() => prefs.getBool(kFirstTimerKey)).called(1);
+          verifyNoMoreInteractions(prefs);
+        },
+      );
     },
   );
 }
