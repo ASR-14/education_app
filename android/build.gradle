@@ -4,6 +4,7 @@ allprojects {
         mavenCentral()
     }
 
+    ////
     subprojects {
         afterEvaluate { project ->
             if (project.hasProperty('android')) {
@@ -15,7 +16,7 @@ allprojects {
             }
         }
     }
-    // Add this part ^^^^^^^^^^^
+    ////
 }
 
 rootProject.buildDir = "../build"
@@ -25,7 +26,6 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
-
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
