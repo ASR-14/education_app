@@ -4,6 +4,8 @@ import 'package:education_app/core/services/injection_container.dart';
 import 'package:education_app/core/services/router.dart';
 import 'package:flutter/material.dart';
 
+//abc
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
