@@ -43,11 +43,17 @@ dependencies:
   youtube_metadata: ^1.0.1
   mocktail: ^1.0.4
   video_thumbnail: ^0.5.3
+  firebase_core: ^3.10.1
+  firebase_auth: ^5.4.1
+  cloud_firestore: ^5.6.2
+  firebase_storage: ^12.4.1
+  firebase_ui_auth: ^1.16.1
 
 
 dependency_overrides:
   http: any
   video_thumbnail: any
+  intl: any
 
 dev_dependencies:
   bloc_test: ^9.1.7
