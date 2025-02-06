@@ -25,7 +25,7 @@ void main() {
         (_) async => Left(
           ServerFailure(
             message: 'Unknown Error Occurred',
-            statusCode: 500,
+            statusCode: '500',
           ),
         ),
       );
@@ -36,7 +36,7 @@ void main() {
         result,
         equals(
           Left<Failure, dynamic>(
-            ServerFailure(message: 'Unknown Error Occurred', statusCode: 500),
+            ServerFailure(message: 'Unknown Error Occurred', statusCode: '500'),
           ),
         ),
       );

@@ -60,7 +60,7 @@ void main() {
           expect(
             result,
             Left<CacheFailure, dynamic>(
-              CacheFailure(message: 'Insufficient storage', statusCode: 500),
+              CacheFailure(message: 'Insufficient storage', statusCode: '500'),
             ),
           );
 

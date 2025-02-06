@@ -30,7 +30,7 @@ void main() {
 
   final tFailure = CacheFailure(
     message: 'Insufficient storage permission',
-    statusCode: 4032,
+    statusCode: '403',
   );
 
   test(

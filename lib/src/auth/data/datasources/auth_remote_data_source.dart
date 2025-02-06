@@ -53,13 +53,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occerred',
-        statusCode: 505,
+        statusCode: e.code,
       );
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(
         message: e.toString(),
-        statusCode: 505,
+        statusCode: '505',
       );
     }
   }
@@ -80,7 +80,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) {
         throw const ServerException(
           message: 'Please try again later',
-          statusCode: 505,
+          statusCode: 'Unknown Error',
         );
       }
 
@@ -97,7 +97,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occerred',
-        statusCode: 505,
+        statusCode: e.code,
       );
     } on ServerException {
       rethrow;
@@ -105,7 +105,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrintStack(stackTrace: s);
       throw ServerException(
         message: e.toString(),
-        statusCode: 505,
+        statusCode: '505',
       );
     }
   }
@@ -127,7 +127,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on FirebaseAuthException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occerred',
-        statusCode: 505,
+        statusCode: e.code,
       );
     } on ServerException {
       rethrow;
@@ -135,7 +135,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrintStack(stackTrace: s);
       throw ServerException(
         message: e.toString(),
-        statusCode: 505,
+        statusCode: '505',
       );
     }
   }
@@ -168,7 +168,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           if (_authClient.currentUser?.email == null) {
             throw const ServerException(
               message: 'User does not exist',
-              statusCode: 505,
+              statusCode: 'Insufficient Permission',
             );
           }
           final newData = jsonDecode(userData as String) as DataMap;
@@ -189,13 +189,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on FirebaseException catch (e) {
       throw ServerException(
         message: e.message ?? 'Error Occerred',
-        statusCode: 505,
+        statusCode: e.code,
       );
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(
         message: e.toString(),
-        statusCode: 505,
+        statusCode: '505',
       );
     }
   }

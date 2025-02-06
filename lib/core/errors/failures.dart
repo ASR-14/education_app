@@ -8,7 +8,7 @@ abstract class Failure extends Equatable {
           'StatusCode cannot be a ${statusCode.runtimeType}',
         );
   final String message;
-  final int statusCode;
+  final String statusCode;
 
   String get errorMessage =>
       '$statusCode${statusCode is String ? '' : ' Error'}: $message';
