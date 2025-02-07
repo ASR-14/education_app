@@ -77,4 +77,23 @@ void main() {
   const tPassword = 'Test password';
   const tFullname = 'Test full name';
   const tEmail = 'Test email';
+
+  group('forgotPassword', () {
+    test(
+      'should complete successfully when no [Exception] is thrown',
+      () async {
+        when(
+          () => authClient.sendPasswordResetEmail(email: any(named: 'email')),
+        ).thenAnswer((_) async => Future.value());
+
+        final call = dataSource.forgotPassword(tEmail);
+
+        expect(call, completes);
+        verify(() => authClient.sendPasswordResetEmail(email: tEmail))
+            .called(1);
+
+        verifyNoMoreInteractions(authClient);
+      },
+    );
+  });
 }
