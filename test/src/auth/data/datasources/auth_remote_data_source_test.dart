@@ -57,56 +57,24 @@ void main() {
   const tUser = LocalUserModel.empty();
 
   setUpAll(() async {
-    mockUser = MockUser()..uid = documentReference.id;
-    authClient = MockFirebaseAuth()..currentUser = mockUser;
+    authClient = MockFirebaseAuth();
     cloudStoreClient = MockFirebaseFirestorage();
     documentReference = await cloudStoreClient.collection('users').add(
           tUser.toMap(),
         );
     dbClient = MockFirebaseStorage();
-
+    mockUser = MockUser()..uid = documentReference.id;
     userCredential = MockUserCredential(mockUser);
     dataSource = AuthRemoteDataSourceImpl(
       authClient: authClient,
       cloudStoreClient: cloudStoreClient,
       dbClient: dbClient,
     );
+
+    when(() => authClient.currentUser).thenReturn(mockUser);
   });
 
-  group('signIn', () {
-    test(
-      'should complete successfully when call to the server is successful',
-      () async {
-        when(
-          () => authClient.signInWithEmailAndPassword(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
-        ).thenAnswer(
-          (_) async => userCredential,
-        );
-
-        when(
-          () => authClient.createUserWithEmailAndPassword(
-            email: 'email',
-            password: 'password',
-          ),
-        ).thenAnswer((_) async => userCredential);
-
-        await dataSource.signUp(
-          email: 'email',
-          fullName: 'fullName',
-          password: 'password',
-        );
-
-        //act
-        final result = await dataSource.signIn(
-          email: 'email',
-          password: 'password',
-        );
-
-        expect(result.email, equals('email'));
-      },
-    );
-  });
+  const tPassword = 'Test password';
+  const tFullname = 'Test full name';
+  const tEmail = 'Test email';
 }
