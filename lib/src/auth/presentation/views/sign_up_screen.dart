@@ -1,3 +1,4 @@
+import 'package:education_app/core/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -12,6 +13,14 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Placeholder(
+      child: Center(
+        child: Text(
+          'SIGN UP SCREEN',
+          style:
+              context.theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
+        ),
+      ),
+    );
   }
 }
