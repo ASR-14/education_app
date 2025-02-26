@@ -4,7 +4,7 @@ import 'package:education_app/core/res/fonts.dart';
 import 'package:education_app/core/services/injection_container.dart';
 import 'package:education_app/core/services/router.dart';
 import 'package:education_app/firebase_options.dart';
-import 'package:education_app/src/dashboard/providers/dashboard_controller.dart';
+import 'package:education_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';

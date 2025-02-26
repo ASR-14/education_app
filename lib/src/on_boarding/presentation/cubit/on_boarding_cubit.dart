@@ -8,7 +8,7 @@ part 'on_boarding_state.dart';
 class OnBoardingCubit extends Cubit<OnBoardingState> {
   OnBoardingCubit(
       {required CacheFirstTimer cacheFirstTimer,
-      required CheckIfUserIsFirstTimer checkIfUserIsFirstTimer})
+      required CheckIfUserIsFirstTimer checkIfUserIsFirstTimer,})
       : _cacheFirstTimer = cacheFirstTimer,
         _checkIfUserIsFirstTimer = checkIfUserIsFirstTimer,
         super(const OnBoardingInitial());

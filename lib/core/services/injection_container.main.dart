@@ -46,6 +46,6 @@ Future<void> _initOnBoarding() async {
     ..registerLazySingleton(() => CheckIfUserIsFirstTimer(sl()))
     ..registerLazySingleton<OnBoardingRepo>(() => OnBoardingRepoImpl(sl()))
     ..registerLazySingleton<OnBoardingLocalDataSource>(
-        () => OnBoardingLocalDataSrcImpl(sl()))
+        () => OnBoardingLocalDataSrcImpl(sl()),)
     ..registerLazySingleton(() => prefs);
 }

@@ -45,18 +45,18 @@ class OnBoardingBody extends StatelessWidget {
                         vertical: 17,
                       ),
                       backgroundColor: Colours.primaryColour,
-                      foregroundColor: Colors.white),
+                      foregroundColor: Colors.white,),
                   onPressed: () {
                     context.read<OnBoardingCubit>().cacheFirstTimer();
                   },
                   child: const Text(
                     'Get Started',
                     style: TextStyle(
-                        fontFamily: Fonts.aeonik, fontWeight: FontWeight.bold),
-                  ))
+                        fontFamily: Fonts.aeonik, fontWeight: FontWeight.bold,),
+                  ),),
             ],
           ),
-        )
+        ),
       ],
     );
   }

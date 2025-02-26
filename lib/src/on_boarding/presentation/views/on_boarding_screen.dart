@@ -76,7 +76,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       dotColor: Colors.white,
                     ),
                   ),
-                )
+                ),
               ],
             );
           },
