@@ -8,6 +8,7 @@ import 'package:education_app/core/extensions/context_extension.dart';
 import 'package:education_app/core/res/media_res.dart';
 import 'package:education_app/core/utils/core_utils.dart';
 import 'package:education_app/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:education_app/src/profile/presentation/widgets/edit_profile_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -128,6 +129,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                       ),
                     );
                   }
+                  if (bioChanged) {
+                    bloc.add(
+                      UpdateUserEvent(
+                        action: UpdateUserAction.bio,
+                        userData: bioController.text.trim(),
+                      ),
+                    );
+                  }
                   if (imageChanged) {
                     bloc.add(
                       UpdateUserEvent(
@@ -173,23 +182,58 @@ class _EditProfileViewState extends State<EditProfileView> {
                             ? null
                             : user.profilePic;
 
-                    return Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: pickedImage != null
-                              ? FileImage(pickedImage!)
-                              : userImage != null
-                                  ? NetworkImage(userImage)
-                                  : const AssetImage(MediaRes.user)
-                                      as ImageProvider,
-                          fit: BoxFit.cover,
-                        ),
+                    return CircleAvatar(
+                      radius: 50,
+                      backgroundImage: pickedImage != null
+                          ? FileImage(pickedImage!)
+                          : userImage != null
+                              ? NetworkImage(userImage)
+                              : const AssetImage(MediaRes.user)
+                                  as ImageProvider,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black.withValues(alpha: .5),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: pickImage,
+                            icon: Icon(
+                              (pickedImage != null || user.profilePic != null)
+                                  ? Icons.edit
+                                  : Icons.add_a_photo,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
+                ),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'We reecommend an image of at least 400x400',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF777E90),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                EditProfileForm(
+                  fullNameController: fullNameController,
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  bioController: bioController,
+                  oldPasswordController: oldPasswordController,
                 ),
               ],
             ),
