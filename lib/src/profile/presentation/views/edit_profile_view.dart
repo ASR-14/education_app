@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:education_app/core/common/widgets/gradient_background.dart';
+import 'package:education_app/core/common/widgets/nested_back_button.dart';
+import 'package:education_app/core/enums/update_user.dart';
 import 'package:education_app/core/extensions/context_extension.dart';
 import 'package:education_app/core/res/media_res.dart';
 import 'package:education_app/core/utils/core_utils.dart';
@@ -77,10 +80,119 @@ class _EditProfileViewState extends State<EditProfileView> {
         return Scaffold(
           extendBodyBehindAppBar: true,
           backgroundColor: Colors.white,
-          appBar: AppBar(),
+          appBar: AppBar(
+            leading: const NestedBackButton(),
+            title: const Text(
+              'Edit Profile',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  if (nothingChanged) context.pop();
+                  final bloc = context.read<AuthBloc>();
+                  if (passwordChanged) {
+                    if (oldPasswordController.text.trim().isEmpty) {
+                      CoreUtils.showSnackBar(
+                        context,
+                        'Please enter your old password',
+                      );
+                      return;
+                    }
+                    bloc.add(
+                      UpdateUserEvent(
+                        action: UpdateUserAction.password,
+                        userData: jsonEncode({
+                          'oldPassword': oldPasswordController.text.trim(),
+                          'newPassword': passwordController.text.trim(),
+                        }),
+                      ),
+                    );
+                  }
+                  if (nameChanged) {
+                    bloc.add(
+                      UpdateUserEvent(
+                        action: UpdateUserAction.displayName,
+                        userData: fullNameController.text.trim(),
+                      ),
+                    );
+                  }
+                  if (emailChanged) {
+                    bloc.add(
+                      UpdateUserEvent(
+                        action: UpdateUserAction.email,
+                        userData: emailController.text.trim(),
+                      ),
+                    );
+                  }
+                  if (imageChanged) {
+                    bloc.add(
+                      UpdateUserEvent(
+                        action: UpdateUserAction.profilePic,
+                        userData: pickedImage,
+                      ),
+                    );
+                  }
+                },
+                child: state is AuthLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : StatefulBuilder(
+                        builder: (_, refresh) {
+                          fullNameController.addListener(() => refresh(() {}));
+                          emailController.addListener(() => refresh(() {}));
+                          passwordController.addListener(() => refresh(() {}));
+                          bioController.addListener(() => refresh(() {}));
+                          return Text(
+                            'Done',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: nothingChanged
+                                  ? Colors.grey
+                                  : Colors.blueAccent,
+                            ),
+                          );
+                        },
+                      ),
+              )
+            ],
+          ),
           body: GradientBackground(
             image: MediaRes.profileGradientBackground,
-            child: ListView(),
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              children: [
+                Builder(
+                  builder: (context) {
+                    final user = context.currentUser!;
+                    final userImage =
+                        user.profilePic == null || user.profilePic!.isEmpty
+                            ? null
+                            : user.profilePic;
+
+                    return Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: pickedImage != null
+                              ? FileImage(pickedImage!)
+                              : userImage != null
+                                  ? NetworkImage(userImage)
+                                  : const AssetImage(MediaRes.user)
+                                      as ImageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
