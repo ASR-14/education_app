@@ -1,5 +1,5 @@
-import 'package:education_app/core/common/features/course/data/datasources/course_remote_data_src.dart';
-import 'package:education_app/core/common/features/course/data/models/course_model.dart';
+import 'package:education_app/src/course/data/datasources/course_remote_data_src.dart';
+import 'package:education_app/src/course/data/models/course_model.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
@@ -59,6 +59,39 @@ void main() {
 
       final groupRef = groupData.docs.first;
       expect(groupRef.data()['id'], groupRef.id);
+
+      expect(courseRef.data()['groupId'], groupRef.id);
+      expect(groupRef.data()['courseId'], courseRef.id);
     });
+  });
+
+  group('getCourse', () {
+    test(
+      'should return a List<Course> when the call is successful',
+      () async {
+        // Arrange
+        final firstDate = DateTime.now();
+        final secondDate = DateTime.now().add(const Duration(days: 1));
+        final expectedCourses = [
+          CourseModel.empty().copyWith(createdAt: firstDate),
+          CourseModel.empty().copyWith(
+            createdAt: secondDate,
+            id: '1',
+            title: 'Course 1',
+          ),
+        ];
+
+        for (final course in expectedCourses) {
+          await firestore.collection('courses').add(course.toMap());
+        }
+
+        // Act
+
+        final result = await remoteDataSource.getCourses();
+
+        // Assert
+        expect(result, expectedCourses);
+      },
+    );
   });
 }

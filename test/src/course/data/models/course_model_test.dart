@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:education_app/core/common/features/course/data/models/course_model.dart';
-import 'package:education_app/core/common/features/course/domain/entities/course.dart';
-import 'package:education_app/core/utils/typdefs.dart';
+import 'package:education_app/src/course/data/models/course_model.dart';
+import 'package:education_app/src/course/domain/entities/course.dart';
+import 'package:education_app/core/utils/typedefs.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../../fixtures/fixture_reader.dart';
+import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   final timestampData = {

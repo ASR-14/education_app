@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:education_app/core/enums/update_user.dart';
 import 'package:education_app/core/errors/exceptions.dart';
 import 'package:education_app/core/errors/failures.dart';
-import 'package:education_app/core/utils/typdefs.dart';
+import 'package:education_app/core/utils/typedefs.dart';
 import 'package:education_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:education_app/src/auth/domain/entities/user.dart';
 import 'package:education_app/src/auth/domain/repos/auth_repo.dart';

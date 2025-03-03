@@ -1,5 +1,5 @@
 import 'package:education_app/core/enums/update_user.dart';
-import 'package:education_app/core/utils/typdefs.dart';
+import 'package:education_app/core/utils/typedefs.dart';
 import 'package:education_app/src/auth/domain/entities/user.dart';
 
 abstract class AuthRepo {

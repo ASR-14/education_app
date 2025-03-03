@@ -1,4 +1,4 @@
-import 'package:education_app/core/utils/typdefs.dart';
+import 'package:education_app/core/utils/typedefs.dart';
 import 'package:education_app/src/auth/domain/entities/user.dart';
 
 class LocalUserModel extends LocalUser {

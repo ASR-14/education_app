@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:education_app/core/common/features/course/domain/entities/course.dart';
-import 'package:education_app/core/utils/typdefs.dart';
+import 'package:education_app/src/course/domain/entities/course.dart';
+import 'package:education_app/core/utils/typedefs.dart';
 
 class CourseModel extends Course {
   const CourseModel({
