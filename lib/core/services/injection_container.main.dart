@@ -5,6 +5,27 @@ final sl = GetIt.instance;
 Future<void> init() async {
   await _initOnBoarding();
   await _initAuth();
+  await _initCourse();
+}
+
+Future<void> _initCourse() async {
+  sl
+    ..registerFactory(
+      () => CourseCubit(
+        addCourse: sl(),
+        getCourses: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => AddCourse(sl()))
+    ..registerLazySingleton(() => GetCourses(sl()))
+    ..registerLazySingleton<CourseRepo>(() => CourseRepoImpl(sl()))
+    ..registerLazySingleton<CourseRemoteDataSrc>(
+      () => CourseRemoteDataSrcImpl(
+        firestore: sl(),
+        storage: sl(),
+        auth: sl(),
+      ),
+    );
 }
 
 Future<void> _initAuth() async {
@@ -46,6 +67,7 @@ Future<void> _initOnBoarding() async {
     ..registerLazySingleton(() => CheckIfUserIsFirstTimer(sl()))
     ..registerLazySingleton<OnBoardingRepo>(() => OnBoardingRepoImpl(sl()))
     ..registerLazySingleton<OnBoardingLocalDataSource>(
-        () => OnBoardingLocalDataSrcImpl(sl()),)
+      () => OnBoardingLocalDataSrcImpl(sl()),
+    )
     ..registerLazySingleton(() => prefs);
 }
