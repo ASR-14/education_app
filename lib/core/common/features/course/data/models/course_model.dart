@@ -78,10 +78,10 @@ class CourseModel extends Course {
         'description': description,
         'groupId': groupId,
         'image': image,
-        'numberOfExams': numberOfExams,
-        'numberOfMaterials': numberOfMaterials,
-        'numberOfVideos': numberOfVideos,
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
+        'numberOfVideos': numberOfVideos,
+        'numberOfExams': numberOfExams,
+        'numberOfMaterials': numberOfMaterials,
       };
 }
