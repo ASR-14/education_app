@@ -1,5 +1,6 @@
 import 'package:education_app/core/common/widgets/tinder_swap_card.dart';
 import 'package:education_app/core/extensions/context_extension.dart';
+import 'package:education_app/core/res/media_res.dart';
 import 'package:education_app/src/home/presentation/widgets/tinder_card.dart';
 import 'package:flutter/material.dart';
 
@@ -57,6 +58,16 @@ class _TinderCardsState extends State<TinderCards>
                     colour: isFirst ? null : colorByIndex,
                   ),
                 ),
+                if (isFirst)
+                  Positioned(
+                    bottom: 130,
+                    right: 20,
+                    child: Image.asset(
+                      MediaRes.microscope,
+                      height: 180,
+                      width: 149,
+                    ),
+                  ),
               ],
             );
           },
