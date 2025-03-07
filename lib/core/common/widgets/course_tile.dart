@@ -13,30 +13,33 @@ class CourseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 54,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 54,
-            width: 54,
-            child: Image.network(
-              course.image!,
-              height: 32,
-              width: 32,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: 54,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 54,
+              width: 54,
+              child: Image.network(
+                course.image!,
+                height: 32,
+                width: 32,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            course.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+            const SizedBox(height: 5),
+            Text(
+              course.title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
