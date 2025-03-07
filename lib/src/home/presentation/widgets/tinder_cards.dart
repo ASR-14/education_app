@@ -48,6 +48,7 @@ class _TinderCardsState extends State<TinderCards>
             final colorByIndex =
                 index == 1 ? const Color(0xFFDA92FC) : const Color(0xFFDC95FB);
             return Stack(
+              // clipBehavior: Clip.none,
               children: [
                 Positioned(
                   bottom: 110,
