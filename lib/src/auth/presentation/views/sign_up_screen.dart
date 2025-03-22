@@ -112,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           );
         },
-        listener: (context, state) {
+        listener: (_, state) {
           if (state is AuthError) {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedUp) {

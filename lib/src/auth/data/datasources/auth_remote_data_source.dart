@@ -34,11 +34,11 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  AuthRemoteDataSourceImpl(
-      {required FirebaseAuth authClient,
-      required FirebaseFirestore cloudStoreClient,
-      required FirebaseStorage dbClient,})
-      : _authClient = authClient,
+  AuthRemoteDataSourceImpl({
+    required FirebaseAuth authClient,
+    required FirebaseFirestore cloudStoreClient,
+    required FirebaseStorage dbClient,
+  })  : _authClient = authClient,
         _cloudStoreClient = cloudStoreClient,
         _dbClient = dbClient;
 
@@ -129,8 +129,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         message: e.message ?? 'Error Occerred',
         statusCode: e.code,
       );
-    } on ServerException {
-      rethrow;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(
