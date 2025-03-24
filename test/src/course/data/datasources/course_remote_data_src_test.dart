@@ -3,15 +3,18 @@ import 'package:education_app/src/course/data/models/course_model.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
-import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
+
+class MockSupabase extends Mock implements sp.Supabase {}
 
 void main() {
   late CourseRemoteDataSrc remoteDataSource;
   late FakeFirebaseFirestore firestore;
   late MockFirebaseAuth auth;
-  late MockFirebaseStorage storage;
+  late MockSupabase storage;
 
   setUp(() async {
     firestore = FakeFirebaseFirestore();
@@ -31,7 +34,7 @@ void main() {
     auth = MockFirebaseAuth(mockUser: user);
     await auth.signInWithCredential(credential);
 
-    storage = MockFirebaseStorage();
+    storage = MockSupabase();
     remoteDataSource = CourseRemoteDataSrcImpl(
       firestore: firestore,
       storage: storage,

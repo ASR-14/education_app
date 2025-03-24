@@ -10,9 +10,9 @@ import 'package:education_app/src/auth/data/datasources/auth_remote_data_source.
 import 'package:education_app/src/auth/data/models/user_model.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
@@ -42,10 +42,70 @@ class MockUserCredential extends Mock implements UserCredential {
 
 class MockAuthCredential extends Mock implements AuthCredential {}
 
+class MockSupabase extends Mock implements sp.Supabase {
+  final _storage = <String, dynamic>{};
+
+  @override
+  sp.GoTrueClient get auth => throw UnimplementedError();
+
+  @override
+  sp.RealtimeClient get realtime => throw UnimplementedError();
+
+  @override
+  sp.SupabaseClient get client => MockSupabaseClient(_storage);
+}
+
+class MockSupabaseClient extends Mock implements sp.SupabaseClient {
+  MockSupabaseClient(this._storage);
+
+  final Map<String, dynamic> _storage;
+
+  @override
+  sp.SupabaseStorageClient get storage => MockSupabaseStorageClient(_storage);
+}
+
+class MockSupabaseStorageClient extends Mock
+    implements sp.SupabaseStorageClient {
+  MockSupabaseStorageClient(this._storage);
+
+  final Map<String, dynamic> _storage;
+
+  @override
+  sp.StorageFileApi from(String bucketId) {
+    return MockStorageBucket(_storage);
+  }
+}
+
+class MockStorageBucket extends Mock implements sp.StorageFileApi {
+  MockStorageBucket(this._storage);
+
+  final Map<String, dynamic> _storage;
+
+  @override
+  Future<String> upload(
+    String path,
+    File file, {
+    sp.FileOptions? fileOptions,
+    int? retryAttempts,
+    sp.StorageRetryController? retryController,
+  }) async {
+    _storage[path] = file;
+    return path;
+  }
+
+  @override
+  String getPublicUrl(
+    String path, {
+    sp.TransformOptions? transform,
+  }) {
+    return 'https://example.com/$path';
+  }
+}
+
 void main() {
   late FirebaseAuth authClient;
   late FirebaseFirestore cloudStoreClient;
-  late MockFirebaseStorage dbClient;
+  late MockSupabase dbClient;
   late AuthRemoteDataSource dataSource;
   late UserCredential userCredential;
   late DocumentReference<DataMap> documentReference;
@@ -60,7 +120,7 @@ void main() {
     await documentReference.set(
       tUser.copyWith(uid: documentReference.id).toMap(),
     );
-    dbClient = MockFirebaseStorage();
+    dbClient = MockSupabase();
     mockUser = MockUser()..uid = documentReference.id;
     userCredential = MockUserCredential(mockUser);
     dataSource = AuthRemoteDataSourceImpl(
@@ -406,7 +466,11 @@ void main() {
         verifyNever(() => mockUser.updatePassword(any()));
         verifyNever(() => mockUser.verifyBeforeUpdateEmail(any()));
 
-        expect(dbClient.storedFilesMap.isNotEmpty, isTrue);
+        // Verify that the file was uploaded to Supabase storage
+        final storageClient =
+            dbClient.client.storage as MockSupabaseStorageClient;
+        final bucket = storageClient.from('storage') as MockStorageBucket;
+        expect(bucket._storage.isNotEmpty, isTrue);
       },
     );
   });

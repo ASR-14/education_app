@@ -70,7 +70,7 @@ Future<void> _initAuth() async {
     )
     ..registerLazySingleton(() => FirebaseAuth.instance)
     ..registerLazySingleton(() => FirebaseFirestore.instance)
-    ..registerLazySingleton(() => FirebaseStorage.instance);
+    ..registerLazySingleton(() => Supabase.instance);
 }
 
 Future<void> _initOnBoarding() async {

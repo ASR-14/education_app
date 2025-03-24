@@ -26,8 +26,8 @@ import 'package:education_app/src/on_boarding/domain/usecases/cache_first_timer.
 import 'package:education_app/src/on_boarding/domain/usecases/check_if_user_is_first_timer.dart';
 import 'package:education_app/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'injection_container.main.dart';

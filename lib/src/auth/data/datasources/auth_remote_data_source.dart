@@ -10,6 +10,7 @@ import 'package:education_app/src/auth/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
@@ -37,14 +38,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({
     required FirebaseAuth authClient,
     required FirebaseFirestore cloudStoreClient,
-    required FirebaseStorage dbClient,
+    required sp.Supabase dbClient,
   })  : _authClient = authClient,
         _cloudStoreClient = cloudStoreClient,
         _dbClient = dbClient;
 
   final FirebaseAuth _authClient;
   final FirebaseFirestore _cloudStoreClient;
-  final FirebaseStorage _dbClient;
+  // final FirebaseStorage _dbClient;
+  final sp.Supabase _dbClient;
 
   @override
   Future<void> forgotPassword(String email) async {
@@ -153,12 +155,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           await _authClient.currentUser?.updateDisplayName(userData as String);
           await _updateUserData({'fullName': userData});
         case UpdateUserAction.profilePic:
-          final ref = _dbClient
-              .ref()
-              .child('profile_pics/${_authClient.currentUser?.uid}');
+          final path = 'profile_pics/${_authClient.currentUser?.uid}';
+          // final ref = _dbClient
+          //     .ref()
+          //     .child('profile_pics/${_authClient.currentUser?.uid}');
 
-          await ref.putFile(userData as File);
-          final url = await ref.getDownloadURL();
+          // await ref.putFile(userData as File);
+          final ref = _dbClient.client.storage.from('storage');
+          await ref.upload(path, userData as File);
+          final url = ref.getPublicUrl(path);
           await _authClient.currentUser?.updatePhotoURL(url);
           await _updateUserData({'profilePic': url});
 

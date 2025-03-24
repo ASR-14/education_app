@@ -7,6 +7,7 @@ import 'package:education_app/core/errors/exceptions.dart';
 import 'package:education_app/src/chat/data/models/group_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 abstract class CourseRemoteDataSrc {
   const CourseRemoteDataSrc();
@@ -18,14 +19,15 @@ abstract class CourseRemoteDataSrc {
 class CourseRemoteDataSrcImpl implements CourseRemoteDataSrc {
   const CourseRemoteDataSrcImpl({
     required FirebaseFirestore firestore,
-    required FirebaseStorage storage,
+    required sp.Supabase storage,
     required FirebaseAuth auth,
   })  : _firestore = firestore,
         _storage = storage,
         _auth = auth;
 
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
+  // final FirebaseStorage _storage;
+  final sp.Supabase _storage;
   final FirebaseAuth _auth;
 
   @override
@@ -47,13 +49,20 @@ class CourseRemoteDataSrcImpl implements CourseRemoteDataSrc {
       );
 
       if (courseModel.imageIsFile) {
-        final imageRef = _storage.ref().child(
-              'courses/${courseModel.id}/profile_image/${courseModel.title}--pfp',
-            );
-        await imageRef.putFile(File(courseModel.image!)).then((value) async {
-          final url = await value.ref.getDownloadURL();
-          courseModel = courseModel.copyWith(image: url);
-        });
+        // final imageRef = _storage.ref().child(
+        //       'courses/${courseModel.id}/profile_image/${courseModel.title}--pfp',
+        //     );
+        // await imageRef.putFile(File(courseModel.image!)).then((value) async {
+        //   final url = await value.ref.getDownloadURL();
+        //   courseModel = courseModel.copyWith(image: url);
+        // });
+        final path =
+            'courses/${courseModel.id}/profile_image/${courseModel.title}--pfp';
+
+        final ref = _storage.client.storage.from('storage');
+        await ref.upload(path, File(courseModel.image!));
+        final url = ref.getPublicUrl(path);
+        courseModel = courseModel.copyWith(image: url);
       }
 
       await courseRef.set(courseModel.toMap());
