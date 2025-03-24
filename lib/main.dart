@@ -2,6 +2,7 @@ import 'package:education_app/core/common/app/providers/course_of_the_day_notifi
 import 'package:education_app/core/common/app/providers/user_provider.dart';
 import 'package:education_app/core/res/colours.dart';
 import 'package:education_app/core/res/fonts.dart';
+import 'package:education_app/core/secrets/secrets.dart';
 import 'package:education_app/core/services/injection_container.dart';
 import 'package:education_app/core/services/router.dart';
 import 'package:education_app/firebase_options.dart';
@@ -10,11 +11,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Supabase.initialize(
+    url: Secrets.supabaseUrl,
+    anonKey: Secrets.supabaseKey,
   );
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
   await init();

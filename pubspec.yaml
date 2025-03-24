@@ -50,6 +50,7 @@ dependencies:
   firebase_ui_auth: ^1.16.1
   uuid: ^4.5.1
   flutter_card_swiper: ^7.0.2
+  supabase_flutter: ^2.8.4
 
 
 dependency_overrides:
