@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:education_app/src/course/features/materials/domain/entities/resource.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
+import 'package:dio/dio.dart';
 
 class ResourceController extends ChangeNotifier {
   ResourceController({
-    required FirebaseStorage storage,
+    required sp.Supabase storage,
     required SharedPreferences prefs,
   })  : _storage = storage,
         _prefs = prefs;
 
-  final FirebaseStorage _storage;
+  final sp.Supabase _storage;
   final SharedPreferences _prefs;
 
   Resource? _resource;
@@ -64,28 +65,27 @@ class ResourceController extends ChangeNotifier {
     );
     if (file.existsSync()) return file;
     try {
-      final ref = _storage.refFromURL(_resource!.fileURL);
+      final bucket = _storage.client.storage.from('storage');
+      final url = bucket.getPublicUrl(_resource!.fileURL);
+
       var successful = false;
-      final downloadTask = ref.writeToFile(file);
-      downloadTask.snapshotEvents.listen((taskSnapshot) async {
-        switch (taskSnapshot.state) {
-          case TaskState.running:
-            _percentage =
-                taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
+      final dio = Dio();
+
+      await dio.download(
+        url,
+        file.path,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            _percentage = (received / total).toDouble();
             notifyListeners();
-          case TaskState.paused:
-            break;
-          case TaskState.success:
-            _downloading = false;
-            await _prefs.setString(_pathKey, file.path);
-            successful = true;
-          case TaskState.canceled:
-            successful = false;
-          case TaskState.error:
-            successful = false;
-        }
-      });
-      await downloadTask;
+          }
+        },
+      );
+
+      _downloading = false;
+      await _prefs.setString(_pathKey, file.path);
+      successful = true;
+
       return successful ? file : null;
     } catch (e) {
       return null;

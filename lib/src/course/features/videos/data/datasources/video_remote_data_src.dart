@@ -7,6 +7,7 @@ import 'package:education_app/src/course/features/videos/data/models/video_model
 import 'package:education_app/src/course/features/videos/domain/entities/video.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 abstract class VideoRemoteDataSrc {
   Future<List<VideoModel>> getVideos(String courseId);
@@ -17,14 +18,14 @@ class VideoRemoteDataSrcImpl implements VideoRemoteDataSrc {
   const VideoRemoteDataSrcImpl({
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
-    required FirebaseStorage storage,
+    required sp.Supabase storage,
   })  : _auth = auth,
         _firestore = firestore,
         _storage = storage;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
+  final sp.Supabase _storage;
 
   @override
   Future<void> addVideo(Video video) async {
@@ -38,16 +39,22 @@ class VideoRemoteDataSrcImpl implements VideoRemoteDataSrc {
 
       var videoModel = (video as VideoModel).copyWith(id: videoRef.id);
       if (videoModel.thumbnailIsFile) {
-        final thumbnailFileRef = _storage.ref().child(
-              'courses/${videoModel.courseId}/videos/${videoRef.id}/thumbnail',
-            );
+        // final thumbnailFileRef = _storage.ref().child(
+        //       'courses/${videoModel.courseId}/videos/${videoRef.id}/thumbnail',
+        //     );
 
-        await thumbnailFileRef.putFile(File(videoModel.thumbnail!)).then(
-          (value) async {
-            final url = await value.ref.getDownloadURL();
-            videoModel = videoModel.copyWith(thumbnail: url);
-          },
-        );
+        // await thumbnailFileRef.putFile(File(videoModel.thumbnail!)).then(
+        //   (value) async {
+        //     final url = await value.ref.getDownloadURL();
+        //     videoModel = videoModel.copyWith(thumbnail: url);
+        //   },
+        // );
+        final path =
+            'courses/${videoModel.courseId}/videos/${videoRef.id}/thumbnail';
+        final bucket = _storage.client.storage.from('storage');
+        await bucket.upload(path, File(videoModel.thumbnail!));
+        final url = bucket.getPublicUrl(path);
+        videoModel = videoModel.copyWith(thumbnail: url);
       }
       await videoRef.set(videoModel.toMap());
       await _firestore.collection('courses').doc(video.courseId).update({

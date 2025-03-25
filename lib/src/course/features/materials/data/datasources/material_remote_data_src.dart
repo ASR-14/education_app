@@ -6,7 +6,7 @@ import 'package:education_app/core/utils/datasource_utils.dart';
 import 'package:education_app/src/course/features/materials/data/models/resource_model.dart';
 import 'package:education_app/src/course/features/materials/domain/entities/resource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 abstract class MaterialRemoteDataSrc {
   Future<List<ResourceModel>> getMaterials(String courseId);
@@ -18,14 +18,14 @@ class MaterialRemoteDataSrcImpl implements MaterialRemoteDataSrc {
   const MaterialRemoteDataSrcImpl({
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
-    required FirebaseStorage storage,
+    required sp.Supabase storage,
   })  : _auth = auth,
         _firestore = firestore,
         _storage = storage;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
+  final sp.Supabase _storage;
 
   @override
   Future<void> addMaterial(Resource material) async {
@@ -39,15 +39,13 @@ class MaterialRemoteDataSrcImpl implements MaterialRemoteDataSrc {
       var materialModel =
           (material as ResourceModel).copyWith(id: materialRef.id);
       if (materialModel.isFile) {
-        final materialFileRef = _storage.ref().child(
-              'courses/${materialModel.courseId}/materials/${materialModel.id}/material',
-            );
-        await materialFileRef
-            .putFile(File(materialModel.fileURL))
-            .then((value) async {
-          final url = await value.ref.getDownloadURL();
-          materialModel = materialModel.copyWith(fileURL: url);
-        });
+        final path =
+            'courses/${materialModel.courseId}/materials/${materialModel.id}/material';
+        final bucket = _storage.client.storage.from('storage');
+
+        await bucket.upload(path, File(materialModel.fileURL));
+        final url = bucket.getPublicUrl(path);
+        materialModel = materialModel.copyWith(fileURL: url);
       }
       await materialRef.set(materialModel.toMap());
 
