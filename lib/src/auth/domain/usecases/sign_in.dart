@@ -4,7 +4,7 @@ import 'package:education_app/src/auth/domain/entities/user.dart';
 import 'package:education_app/src/auth/domain/repos/auth_repo.dart';
 import 'package:equatable/equatable.dart';
 
-class SignIn extends UsecaseWithParams<LocalUser, SignInParams> {
+class SignIn extends FutureUsecaseWithParams<LocalUser, SignInParams> {
   const SignIn(this._repo);
 
   final AuthRepo _repo;

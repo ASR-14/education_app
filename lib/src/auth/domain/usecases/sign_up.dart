@@ -3,7 +3,7 @@ import 'package:education_app/core/utils/typedefs.dart';
 import 'package:education_app/src/auth/domain/repos/auth_repo.dart';
 import 'package:equatable/equatable.dart';
 
-class SignUp extends UsecaseWithParams<void, SignUpParams> {
+class SignUp extends FutureUsecaseWithParams<void, SignUpParams> {
   const SignUp(this._repo);
 
   final AuthRepo _repo;

@@ -3,7 +3,7 @@ import 'package:education_app/core/utils/typedefs.dart';
 import 'package:education_app/src/course/features/exams/domain/entities/user_exam.dart';
 import 'package:education_app/src/course/features/exams/domain/repos/exam_repo.dart';
 
-class SubmitExam extends UsecaseWithParams<void, UserExam> {
+class SubmitExam extends FutureUsecaseWithParams<void, UserExam> {
   const SubmitExam(this._repo);
 
   final ExamRepo _repo;
