@@ -26,7 +26,7 @@ class AddVideoView extends StatefulWidget {
 
 class _AddVideoViewState extends State<AddVideoView> {
   final urlController = TextEditingController();
-  final authorController = TextEditingController(text: 'dbestech');
+  final authorController = TextEditingController(text: 'khoazp');
   final titleController = TextEditingController();
   final courseController = TextEditingController();
   final courseNotifier = ValueNotifier<Course?>(null);
