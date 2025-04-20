@@ -4,8 +4,10 @@ import 'package:education_app/core/common/widgets/gradient_background.dart';
 import 'package:education_app/core/extensions/context_extension.dart';
 import 'package:education_app/core/extensions/int_extensions.dart';
 import 'package:education_app/core/res/media_res.dart';
-import 'package:education_app/src/course/data/models/course_model.dart';
 import 'package:education_app/src/course/domain/entities/course.dart';
+import 'package:education_app/src/course/features/exams/presentation/views/course_exams_view.dart';
+import 'package:education_app/src/course/features/materials/presentation/views/course_materials_view.dart';
+import 'package:education_app/src/course/features/videos/presentation/views/course_videos_view.dart';
 import 'package:flutter/material.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
@@ -17,11 +19,6 @@ class CourseDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final course = (this.course as CourseModel).copyWith(
-    //   numberOfVideos: 2,
-    //   numberOfExams: 3,
-    //   numberOfMaterials: 30,
-    // );
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -33,7 +30,7 @@ class CourseDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             children: [
               SizedBox(
-                height: context.height * 3,
+                height: context.height * .3,
                 child: Center(
                   child: course.image != null
                       ? Image.network(course.image!)
@@ -69,11 +66,11 @@ class CourseDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       CourseInfoTile(
                         image: MediaRes.courseInfoVideo,
-                        title: '${course.numberOfVideos} Videos',
+                        title: '${course.numberOfVideos} Video(s)',
                         subtitle: 'Watch our tutorial '
                             'videos for ${course.title}',
                         onTap: () => Navigator.of(context).pushNamed(
-                          '/unknown-route',
+                          CourseVideosView.routeName,
                           arguments: course,
                         ),
                       ),
@@ -82,10 +79,10 @@ class CourseDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       CourseInfoTile(
                         image: MediaRes.courseInfoExam,
-                        title: '${course.numberOfExams} Video(s)',
+                        title: '${course.numberOfExams} Exam(s)',
                         subtitle: 'Take our exams for ${course.title}',
                         onTap: () => Navigator.of(context).pushNamed(
-                          '/unknown-route',
+                          CourseExamsView.routeName,
                           arguments: course,
                         ),
                       ),
@@ -95,18 +92,18 @@ class CourseDetailsScreen extends StatelessWidget {
                       CourseInfoTile(
                         image: MediaRes.courseInfoMaterial,
                         title: '${course.numberOfMaterials} Material(s)',
-                        subtitle:
-                            'Access to ${course.numberOfMaterials.estimate}'
-                            ' materials for ${course.title}',
+                        subtitle: 'Access to '
+                            '${course.numberOfMaterials.estimate} materials '
+                            'for ${course.title}',
                         onTap: () => Navigator.of(context).pushNamed(
-                          '/unknown-route',
+                          CourseMaterialsView.routeName,
                           arguments: course,
                         ),
                       ),
                     ],
                   ],
                 ],
-              )
+              ),
             ],
           ),
         ),

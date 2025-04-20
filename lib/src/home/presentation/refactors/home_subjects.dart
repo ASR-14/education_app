@@ -8,10 +8,7 @@ import 'package:education_app/src/home/presentation/widgets/section_header.dart'
 import 'package:flutter/material.dart';
 
 class HomeSubjects extends StatelessWidget {
-  const HomeSubjects({
-    required this.courses,
-    super.key,
-  });
+  const HomeSubjects({required this.courses, super.key});
 
   final List<Course> courses;
 

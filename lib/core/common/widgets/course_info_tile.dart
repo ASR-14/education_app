@@ -6,8 +6,8 @@ class CourseInfoTile extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subtitle,
-    this.onTap,
     super.key,
+    this.onTap,
   });
 
   final VoidCallback? onTap;
@@ -18,6 +18,7 @@ class CourseInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Row(
         children: [
@@ -33,10 +34,7 @@ class CourseInfoTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
               Text(
                 subtitle,
                 style: const TextStyle(
