@@ -2,11 +2,7 @@ import 'package:education_app/src/course/domain/entities/course.dart';
 import 'package:flutter/material.dart';
 
 class CourseTile extends StatelessWidget {
-  const CourseTile({
-    required this.course,
-    this.onTap,
-    super.key,
-  });
+  const CourseTile({required this.course, super.key, this.onTap});
 
   final Course course;
   final VoidCallback? onTap;
