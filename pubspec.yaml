@@ -57,6 +57,7 @@ dependencies:
   flutter_chat_types: ^3.6.2
   flutter_link_previewer: ^3.2.2
   audioplayers: ^6.4.0
+  step_progress_indicator: ^1.0.2
 
 
 dependency_overrides:

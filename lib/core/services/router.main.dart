@@ -2,7 +2,6 @@ part of 'router.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    // case OnBoardingScreen.routeName:
     case '/':
       final prefs = sl<SharedPreferences>();
       return _pageBuilder(
@@ -30,7 +29,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         },
         settings: settings,
       );
-
     case SignInScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -39,7 +37,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     case SignUpScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -48,7 +45,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     case Dashboard.routeName:
       return _pageBuilder(
         (_) => const Dashboard(),
@@ -60,13 +56,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const fui.ForgotPasswordScreen(),
         settings: settings,
       );
-
     case CourseDetailsScreen.routeName:
       return _pageBuilder(
         (_) => CourseDetailsScreen(settings.arguments! as Course),
         settings: settings,
       );
-
     case ExamDetailsView.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -75,7 +69,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
+    case ExamHistoryDetailsScreen.routeName:
+      return _pageBuilder(
+        (_) => ExamHistoryDetailsScreen(settings.arguments! as UserExam),
+        settings: settings,
+      );
     case ExamView.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -89,7 +87,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     case AddVideoView.routeName:
       return _pageBuilder(
         (_) => MultiBlocProvider(
@@ -126,7 +123,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     case VideoPlayerView.routeName:
       return _pageBuilder(
         (_) => VideoPlayerView(videoURL: settings.arguments! as String),
@@ -140,7 +136,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     case CourseMaterialsView.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -157,7 +152,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),
