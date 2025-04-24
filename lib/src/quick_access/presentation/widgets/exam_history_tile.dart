@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class ExamHistoryTile extends StatelessWidget {
-  const ExamHistoryTile(this.exam, {
+  const ExamHistoryTile(
+    this.exam, {
     super.key,
     this.navigateToDetails = true,
   });
