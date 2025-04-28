@@ -84,7 +84,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           .collection('groups')
           .doc(groupId)
           .collection('messages')
-          .orderBy('timestamp')
+          .orderBy('timestamp', descending: true)
           .snapshots()
           .map((snapshot) {
         return snapshot.docs

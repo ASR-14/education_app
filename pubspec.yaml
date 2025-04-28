@@ -58,6 +58,7 @@ dependencies:
   flutter_link_previewer: ^3.2.2
   audioplayers: ^6.4.0
   step_progress_indicator: ^1.0.2
+  firebase_ui_firestore: ^1.7.1
 
 
 dependency_overrides:

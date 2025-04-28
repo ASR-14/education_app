@@ -8,16 +8,16 @@ class EditProfileForm extends StatelessWidget {
     required this.fullNameController,
     required this.emailController,
     required this.passwordController,
-    required this.bioController,
     required this.oldPasswordController,
+    required this.bioController,
     super.key,
   });
 
   final TextEditingController fullNameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final TextEditingController bioController;
   final TextEditingController oldPasswordController;
+  final TextEditingController bioController;
 
   @override
   Widget build(BuildContext context) {

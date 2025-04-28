@@ -27,10 +27,11 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         PopupMenuButton(
           offset: const Offset(0, 50),
-          icon: const Icon(Icons.more_horiz),
           surfaceTintColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          icon: const Icon(Icons.more_horiz),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           itemBuilder: (_) => [
             PopupMenuItem<void>(
               child: const PopupItem(
@@ -40,10 +41,12 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colours.neutralTextColour,
                 ),
               ),
-              onTap: () => context.push(BlocProvider(
-                create: (_) => sl<AuthBloc>(),
-                child: const EditProfileView(),
-              )),
+              onTap: () => context.push(
+                BlocProvider(
+                  create: (_) => sl<AuthBloc>(),
+                  child: const EditProfileView(),
+                ),
+              ),
             ),
             const PopupMenuItem<void>(
               child: PopupItem(
@@ -85,7 +88,10 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 final navigator = Navigator.of(context);
                 await FirebaseAuth.instance.signOut();
                 unawaited(
-                  navigator.pushNamedAndRemoveUntil('/', (route) => false),
+                  navigator.pushNamedAndRemoveUntil(
+                    '/',
+                    (route) => false,
+                  ),
                 );
               },
             ),

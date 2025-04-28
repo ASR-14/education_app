@@ -5,9 +5,9 @@ class EditProfileFormField extends StatelessWidget {
   const EditProfileFormField({
     required this.fieldTitle,
     required this.controller,
+    super.key,
     this.hintText,
     this.readOnly = false,
-    super.key,
   });
 
   final String fieldTitle;
@@ -24,10 +24,7 @@ class EditProfileFormField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           child: Text(
             fieldTitle,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
           ),
         ),
         const SizedBox(height: 10),
