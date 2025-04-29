@@ -45,6 +45,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         }
       },
       child: Container(
+        key: widget.key,
         constraints: BoxConstraints(maxWidth: context.width - 45),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(

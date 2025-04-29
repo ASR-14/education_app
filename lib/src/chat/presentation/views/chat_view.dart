@@ -79,6 +79,7 @@ class _ChatViewState extends State<ChatView> {
                       return BlocProvider(
                         create: (_) => sl<ChatCubit>(),
                         child: MessageBubble(
+                          key: ValueKey(message.id),
                           message,
                           showSenderInfo: showSenderInfo,
                         ),
