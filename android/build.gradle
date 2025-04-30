@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Cập nhật plugin Android Gradle mới hơn để hỗ trợ compileSdk 34
+        classpath 'com.android.tools.build:gradle:8.4.0'
+        // Nếu bạn dùng Firebase
+        classpath 'com.google.gms:google-services:4.4.1'
+    }
+}
+
 allprojects {
     repositories {
         google()
