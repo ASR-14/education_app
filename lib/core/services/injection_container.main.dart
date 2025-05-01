@@ -11,6 +11,17 @@ Future<void> init() async {
   await _initExam();
   await _initNotifications();
   await _initChat();
+  await _initSearch();
+}
+
+Future<void> _initSearch() async {
+  sl
+    ..registerLazySingleton<SearchRepo>(
+      () => SearchRepoImpl(sl<FirebaseFirestore>()),
+    )
+    ..registerFactory(
+      () => SearchProvider(sl<SearchRepo>()),
+    );
 }
 
 Future<void> _initChat() async {

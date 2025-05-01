@@ -66,5 +66,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:education_app/src/search/data/repos/search_repo_impl.dart';
+import 'package:education_app/src/search/domain/repos/search_repo.dart';
+import 'package:education_app/src/search/presentation/providers/search_provider.dart';
 
 part 'injection_container.main.dart';
+

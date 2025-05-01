@@ -8,6 +8,7 @@ import 'package:education_app/core/services/injection_container.dart';
 import 'package:education_app/core/services/router.dart';
 import 'package:education_app/firebase_options.dart';
 import 'package:education_app/src/dashboard/presentation/providers/dashboard_controller.dart';
+import 'package:education_app/src/search/presentation/providers/search_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => NotificationsNotifier(sl<SharedPreferences>()),
         ),
+        ChangeNotifierProvider(create: (_) => sl<SearchProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
