@@ -14,13 +14,13 @@ class Exam extends Equatable {
 
   const Exam.empty()
       : this(
-    id: 'Test String',
-    courseId: 'Test String',
-    title: 'Test String',
-    description: 'Test String',
-    timeLimit: 0,
-    questions: const [],
-  );
+          id: 'Test String',
+          courseId: 'Test String',
+          title: 'Test String',
+          description: 'Test String',
+          timeLimit: 0,
+          questions: const [],
+        );
 
   final String id;
   final String courseId;

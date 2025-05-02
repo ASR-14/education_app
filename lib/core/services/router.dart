@@ -10,6 +10,7 @@ import 'package:education_app/src/course/features/exams/domain/entities/exam.dar
 import 'package:education_app/src/course/features/exams/domain/entities/user_exam.dart';
 import 'package:education_app/src/course/features/exams/presentation/app/cubit/exam_cubit.dart';
 import 'package:education_app/src/course/features/exams/presentation/app/providers/exam_controller.dart';
+import 'package:education_app/src/course/features/exams/presentation/views/add_exam_ui_view.dart';
 import 'package:education_app/src/course/features/exams/presentation/views/add_exam_view.dart';
 import 'package:education_app/src/course/features/exams/presentation/views/course_exams_view.dart';
 import 'package:education_app/src/course/features/exams/presentation/views/exam_details_view.dart';

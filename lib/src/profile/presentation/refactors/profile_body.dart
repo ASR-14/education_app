@@ -3,6 +3,7 @@ import 'package:education_app/core/extensions/context_extension.dart';
 import 'package:education_app/core/res/colours.dart';
 import 'package:education_app/core/res/media_res.dart';
 import 'package:education_app/core/services/injection_container.dart';
+import 'package:education_app/src/course/features/exams/presentation/views/add_exam_ui_view.dart';
 import 'package:education_app/src/course/features/exams/presentation/views/add_exam_view.dart';
 import 'package:education_app/src/course/features/materials/presentation/views/add_materials_view.dart';
 import 'package:education_app/src/course/features/videos/presentation/views/add_video_view.dart';
@@ -128,6 +129,13 @@ class ProfileBody extends StatelessWidget {
                 icon: IconlyLight.document,
                 onPressed: () {
                   Navigator.pushNamed(context, AddExamView.routeName);
+                },
+              ),
+              AdminButton(
+                label: 'Add Exam UI',
+                icon: IconlyLight.edit,
+                onPressed: () {
+                  Navigator.pushNamed(context, AddExamUIView.routeName);
                 },
               ),
             ],
