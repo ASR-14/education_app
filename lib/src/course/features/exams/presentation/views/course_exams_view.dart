@@ -66,7 +66,8 @@ class _CourseExamsViewState extends State<CourseExamsView> {
                     children: [
                       Card(
                         margin: const EdgeInsets.all(4).copyWith(bottom: 30),
-                        child: Padding(
+                        child: Container(
+                          width: double.infinity,
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +103,7 @@ class _CourseExamsViewState extends State<CourseExamsView> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
+                              minimumSize: const Size(double.infinity, 45),
                             ),
                             onPressed: () {
                               Navigator.pushNamed(

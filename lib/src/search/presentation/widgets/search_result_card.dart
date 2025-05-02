@@ -69,20 +69,20 @@ class SearchResultCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.school,
-                          size: 16,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Course',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[600],
-                                  ),
-                        ),
-                        const SizedBox(width: 16),
+                        // const Icon(
+                        //   Icons.school,
+                        //   size: 16,
+                        //   color: Colors.grey,
+                        // ),
+                        // const SizedBox(width: 4),
+                        // Text(
+                        //   'Course',
+                        //   style:
+                        //       Theme.of(context).textTheme.bodySmall?.copyWith(
+                        //             color: Colors.grey[600],
+                        //           ),
+                        // ),
+                        // const SizedBox(width: 16),
                         const Icon(
                           Icons.video_library,
                           size: 16,
@@ -96,20 +96,20 @@ class SearchResultCard extends StatelessWidget {
                                     color: Colors.grey[600],
                                   ),
                         ),
-                        // const SizedBox(width: 16),
-                        // const Icon(
-                        //   Icons.assignment,
-                        //   size: 16,
-                        //   color: Colors.grey,
-                        // ),
-                        // const SizedBox(width: 4),
-                        // Text(
-                        //   '${course.numberOfExams} exams',
-                        //   style:
-                        //       Theme.of(context).textTheme.bodySmall?.copyWith(
-                        //             color: Colors.grey[600],
-                        //           ),
-                        // ),
+                        const SizedBox(width: 16),
+                        const Icon(
+                          Icons.assignment,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${course.numberOfExams} exams',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                        ),
                       ],
                     ),
                   ],

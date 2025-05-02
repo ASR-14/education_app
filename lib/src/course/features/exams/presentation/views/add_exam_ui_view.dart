@@ -222,22 +222,12 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Questions',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: addQuestion,
-                          icon: const Icon(Icons.add),
-                          label: const Text('Add Question'),
-                        ),
-                      ],
+                    const Text(
+                      'Questions',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     ...questions.asMap().entries.map((entry) {
@@ -336,6 +326,15 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                         ),
                       );
                     }).toList(),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: addQuestion,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add Question'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
