@@ -20,7 +20,6 @@ class ExamView extends StatefulWidget {
 
 class _ExamViewState extends State<ExamView> {
   bool showingLoader = false;
-
   late ExamController examController;
 
   Future<void> submitExam() async {
@@ -82,21 +81,18 @@ class _ExamViewState extends State<ExamView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     examController = context.read<ExamController>();
+    examController.addListener(_onControllerUpdate);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPersistentFrameCallback((_) {
-      examController.addListener(() {
-        if (examController.isTimeUp) submitExam();
-      });
-    });
+  void _onControllerUpdate() {
+    if (examController.isTimeUp) {
+      submitExam();
+    }
   }
 
   @override
   void dispose() {
-    examController.dispose();
+    examController.removeListener(_onControllerUpdate);
     super.dispose();
   }
 

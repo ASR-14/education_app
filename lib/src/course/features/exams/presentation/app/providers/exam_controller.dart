@@ -60,11 +60,19 @@ class ExamController extends ChangeNotifier {
 
   ExamQuestion get currentQuestion => _questions[_currentIndex];
 
+  bool _mounted = true;
+
   void startTimer() {
+    if (!_mounted) return;
     _examStarted = true;
+    _timer?.cancel();
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
+        if (!_mounted) {
+          timer.cancel();
+          return;
+        }
         if (_remainingTime > 0) {
           _remainingTime--;
           notifyListeners();
@@ -77,6 +85,7 @@ class ExamController extends ChangeNotifier {
 
   void stopTimer() {
     _timer?.cancel();
+    _timer = null;
   }
 
   UserChoice? get userAnswer {
@@ -94,11 +103,13 @@ class ExamController extends ChangeNotifier {
   }
 
   void changeIndex(int index) {
+    if (!_mounted) return;
     _currentIndex = index;
     notifyListeners();
   }
 
   void nextQuestion() {
+    if (!_mounted) return;
     if (!_examStarted) startTimer();
     if (_currentIndex < _questions.length - 1) {
       _currentIndex++;
@@ -107,6 +118,7 @@ class ExamController extends ChangeNotifier {
   }
 
   void previousQuestion() {
+    if (!_mounted) return;
     if (_currentIndex > 0) {
       _currentIndex--;
       notifyListeners();
@@ -114,6 +126,7 @@ class ExamController extends ChangeNotifier {
   }
 
   void answer(QuestionChoice choice) {
+    if (!_mounted) return;
     if (!_examStarted && currentIndex == 0) startTimer();
     final answers = List<UserChoice>.of(_userExam.answers);
     final userChoice = UserChoiceModel(
@@ -135,7 +148,8 @@ class ExamController extends ChangeNotifier {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _mounted = false;
+    stopTimer();
     super.dispose();
   }
 }

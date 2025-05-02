@@ -4,8 +4,10 @@ import 'package:education_app/core/utils/datasource_utils.dart';
 import 'package:education_app/src/course/features/exams/data/models/exam_model.dart';
 import 'package:education_app/src/course/features/exams/data/models/exam_question_model.dart';
 import 'package:education_app/src/course/features/exams/data/models/question_choice_model.dart';
+import 'package:education_app/src/course/features/exams/data/models/user_choice_model.dart';
 import 'package:education_app/src/course/features/exams/data/models/user_exam_model.dart';
 import 'package:education_app/src/course/features/exams/domain/entities/exam.dart';
+import 'package:education_app/src/course/features/exams/domain/entities/user_choice.dart';
 import 'package:education_app/src/course/features/exams/domain/entities/user_exam.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -155,6 +157,36 @@ class ExamRemoteDataSrcImpl implements ExamRemoteDataSrc {
     try {
       await DataSourceUtils.authorizeUser(_auth);
       final user = _auth.currentUser!;
+
+      final examQuestions = await _firestore
+          .collection('courses')
+          .doc(exam.courseId)
+          .collection('exams')
+          .doc(exam.examId)
+          .collection('questions')
+          .get();
+
+      final questions = examQuestions.docs
+          .map((doc) => ExamQuestionModel.fromMap(doc.data()))
+          .toList();
+
+      final updatedAnswers = <UserChoiceModel>[];
+      for (final answer in exam.answers) {
+        final question = questions.firstWhere(
+          (q) => q.id == answer.questionId,
+          orElse: () => ExamQuestionModel.empty(),
+        );
+        updatedAnswers.add(UserChoiceModel(
+          userChoice: answer.userChoice,
+          questionId: answer.questionId,
+          correctChoice: question.correctAnswer ?? '',
+        ));
+      }
+
+      final updatedExam = (exam as UserExamModel).copyWith(
+        answers: updatedAnswers,
+      );
+
       await _firestore
           .collection('users')
           .doc(user.uid)
@@ -172,9 +204,9 @@ class ExamRemoteDataSrcImpl implements ExamRemoteDataSrc {
           .doc(exam.courseId)
           .collection('exams')
           .doc(exam.examId)
-          .set((exam as UserExamModel).toMap());
+          .set(updatedExam.toMap());
 
-      final totalPoints = exam.answers
+      final totalPoints = updatedAnswers
           .where((answer) => answer.isCorrect)
           .fold<int>(0, (previousValue, _) => previousValue + 1);
 
@@ -223,7 +255,6 @@ class ExamRemoteDataSrcImpl implements ExamRemoteDataSrc {
           .doc(exam.id)
           .update((exam as ExamModel).toMap());
 
-      // update questions
       final questions = exam.questions;
 
       if (questions != null && questions.isNotEmpty) {
@@ -267,7 +298,6 @@ class ExamRemoteDataSrcImpl implements ExamRemoteDataSrc {
       final examToUpload = (exam as ExamModel).copyWith(id: examDocRef.id);
       await examDocRef.set(examToUpload.toMap());
 
-      // upload questions
       final questions = exam.questions;
       if (questions != null && questions.isNotEmpty) {
         final batch = _firestore.batch();

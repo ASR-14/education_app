@@ -54,8 +54,8 @@ class ExamNavigationBlob extends StatelessWidget {
                     onPressed: controller.nextQuestion,
                     icon: Icon(
                       Icons.arrow_forward,
-                      color: controller.currentIndex ==
-                              controller.totalQuestions - 1
+                      color: controller.currentIndex == controller
+                          .totalQuestions - 1
                           ? Colors.grey
                           : Colors.black,
                     ),

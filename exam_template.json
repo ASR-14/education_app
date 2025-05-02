@@ -1,0 +1,155 @@
+{
+  "id": "123asd",
+  "courseId": "course_123",
+  "title": "Kiểm tra kiến thức Flutter",
+  "Description": "Bài kiểm tra tổng hợp kiến thức về Flutter và Dart",
+  "time_seconds": 1800,
+  "image_url": "https://k8school.com/wp-content/uploads/2023/11/Why-Are-Exams-Important-How-Do-They-Improve-Learning.jpg",
+  "questions": [
+    {
+      "id": "q1",
+      "examId": "",
+      "courseId": "course_123",
+      "question": "Flutter là gì?",
+      "correct_answer": "A",
+      "answers": [
+        {
+          "questionId": "q1",
+          "identifier": "A",
+          "Answer": "Một framework UI đa nền tảng của Google"
+        },
+        {
+          "questionId": "q1",
+          "identifier": "B",
+          "Answer": "Một ngôn ngữ lập trình"
+        },
+        {
+          "questionId": "q1",
+          "identifier": "C",
+          "Answer": "Một hệ điều hành di động"
+        },
+        {
+          "questionId": "q1",
+          "identifier": "D",
+          "Answer": "Một công cụ thiết kế UI"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "examId": "",
+      "courseId": "course_123",
+      "question": "Ngôn ngữ lập trình chính được sử dụng trong Flutter là gì?",
+      "correct_answer": "B",
+      "answers": [
+        {
+          "questionId": "q2",
+          "identifier": "A",
+          "Answer": "Java"
+        },
+        {
+          "questionId": "q2",
+          "identifier": "B",
+          "Answer": "Dart"
+        },
+        {
+          "questionId": "q2",
+          "identifier": "C",
+          "Answer": "Kotlin"
+        },
+        {
+          "questionId": "q2",
+          "identifier": "D",
+          "Answer": "Swift"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "examId": "",
+      "courseId": "course_123",
+      "question": "Widget nào sau đây KHÔNG phải là StatelessWidget?",
+      "correct_answer": "C",
+      "answers": [
+        {
+          "questionId": "q3",
+          "identifier": "A",
+          "Answer": "Text"
+        },
+        {
+          "questionId": "q3",
+          "identifier": "B",
+          "Answer": "Icon"
+        },
+        {
+          "questionId": "q3",
+          "identifier": "C",
+          "Answer": "StatefulBuilder"
+        },
+        {
+          "questionId": "q3",
+          "identifier": "D",
+          "Answer": "Container"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "examId": "",
+      "courseId": "course_123",
+      "question": "Đâu là cách đúng để khai báo một biến trong Dart?",
+      "correct_answer": "D",
+      "answers": [
+        {
+          "questionId": "q4",
+          "identifier": "A",
+          "Answer": "var x = 5;"
+        },
+        {
+          "questionId": "q4",
+          "identifier": "B",
+          "Answer": "int x = 5;"
+        },
+        {
+          "questionId": "q4",
+          "identifier": "C",
+          "Answer": "final x = 5;"
+        },
+        {
+          "questionId": "q4",
+          "identifier": "D",
+          "Answer": "Tất cả các cách trên đều đúng"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "examId": "",
+      "courseId": "course_123",
+      "question": "Hot Reload trong Flutter có tác dụng gì?",
+      "correct_answer": "A",
+      "answers": [
+        {
+          "questionId": "q5",
+          "identifier": "A",
+          "Answer": "Cập nhật UI mà không cần khởi động lại ứng dụng"
+        },
+        {
+          "questionId": "q5",
+          "identifier": "B",
+          "Answer": "Tải lại toàn bộ ứng dụng"
+        },
+        {
+          "questionId": "q5",
+          "identifier": "C",
+          "Answer": "Xóa cache của ứng dụng"
+        },
+        {
+          "questionId": "q5",
+          "identifier": "D",
+          "Answer": "Cập nhật phiên bản Flutter"
+        }
+      ]
+    }
+  ]
+} 

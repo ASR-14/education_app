@@ -17,8 +17,9 @@ class ExamHistoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final answeredQuestionsPercentage =
-        exam.answers.length / exam.totalQuestions;
+    final correctAnswers =
+        exam.answers.where((answer) => answer.isCorrect).length;
+    final scorePercentage = correctAnswers / exam.totalQuestions;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: navigateToDetails
@@ -65,11 +66,11 @@ class ExamHistoryTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 RichText(
                   text: TextSpan(
-                    text: '${exam.answers.length}/${exam.totalQuestions} ',
+                    text: '$correctAnswers/${exam.totalQuestions} ',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: answeredQuestionsPercentage < .5
+                      color: scorePercentage < .5
                           ? Colours.redColour
                           : Colours.greenColour,
                     ),
@@ -90,20 +91,19 @@ class ExamHistoryTile extends StatelessWidget {
           const SizedBox(width: 16),
           CircularStepProgressIndicator(
             totalSteps: exam.totalQuestions,
-            currentStep: exam.answers.length,
-            selectedColor: answeredQuestionsPercentage < .5
-                ? Colours.redColour
-                : Colours.greenColour,
+            currentStep: correctAnswers,
+            selectedColor:
+                scorePercentage < .5 ? Colours.redColour : Colours.greenColour,
             padding: 0,
             width: 60,
             height: 60,
             child: Center(
               child: Text(
-                '${(answeredQuestionsPercentage * 100).toInt()}',
+                '${(scorePercentage * 100).toInt()}',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: answeredQuestionsPercentage < .5
+                  color: scorePercentage < .5
                       ? Colours.redColour
                       : Colours.greenColour,
                 ),

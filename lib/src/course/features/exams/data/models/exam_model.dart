@@ -75,9 +75,6 @@ class ExamModel extends Exam {
     );
   }
 
-  // We never actually upload the questions with the exam, so we don't need to
-  // convert them to a map. Instead we will keep them in individual
-  // documents, and at the point of taking the exam, we will fetch the questions
   DataMap toMap() {
     return <String, dynamic>{
       'id': id,
