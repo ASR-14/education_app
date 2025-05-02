@@ -62,7 +62,7 @@ class _AddExamUIViewState extends State<AddExamUIView> {
         courseId: courseNotifier.value!.id,
         title: examTitleController.text,
         description: examDescriptionController.text,
-        timeLimit: int.parse(examDurationController.text),
+        timeLimit: int.parse(examDurationController.text) * 60,
         imageUrl: examImageUrlController.text.isEmpty
             ? null
             : examImageUrlController.text,
