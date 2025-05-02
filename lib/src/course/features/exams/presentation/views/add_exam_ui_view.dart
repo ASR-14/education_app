@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:education_app/core/common/widgets/course_picker.dart';
+import 'package:education_app/core/common/widgets/titled_input_field.dart';
 import 'package:education_app/core/enums/notification_enum.dart';
 import 'package:education_app/core/utils/core_utils.dart';
 import 'package:education_app/src/course/domain/entities/course.dart';
@@ -9,6 +11,7 @@ import 'package:education_app/src/course/features/exams/presentation/app/cubit/e
 import 'package:education_app/src/notifications/presentation/presentation/widgets/notification_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddExamUIView extends StatefulWidget {
   const AddExamUIView({super.key});
@@ -32,6 +35,42 @@ class _AddExamUIViewState extends State<AddExamUIView> {
   final questionControllers = <TextEditingController>[];
   final choiceControllers = <List<TextEditingController>>[];
   final correctAnswerIndices = <int?>[];
+
+  File? imageFile;
+  bool isFile = false;
+
+  @override
+  void initState() {
+    super.initState();
+    examImageUrlController.addListener(() {
+      if (isFile && examImageUrlController.text.isEmpty) {
+        imageFile = null;
+        isFile = false;
+      }
+    });
+  }
+
+  Future<String?> uploadImageToSupabase(File image, String examId) async {
+    try {
+      final fileName = '$examId.${image.path.split('.').last}';
+      final filePath = 'courses/${courseNotifier.value!.id}/exams/$fileName';
+
+      await Supabase.instance.client.storage.from('storage').upload(
+            filePath,
+            image,
+            fileOptions: const FileOptions(upsert: true),
+          );
+
+      final imageUrl = Supabase.instance.client.storage
+          .from('storage')
+          .getPublicUrl(filePath);
+
+      return imageUrl;
+    } catch (e) {
+      CoreUtils.showSnackBar(context, 'Failed to upload image: $e');
+      return null;
+    }
+  }
 
   void addQuestion() {
     setState(() {
@@ -57,15 +96,23 @@ class _AddExamUIViewState extends State<AddExamUIView> {
 
   Future<void> uploadExam() async {
     if (formKey.currentState!.validate()) {
+      final examId = DateTime.now().millisecondsSinceEpoch.toString();
+      String? imageUrl;
+
+      if (isFile && imageFile != null) {
+        imageUrl = await uploadImageToSupabase(imageFile!, examId);
+        if (imageUrl == null) return;
+      } else if (examImageUrlController.text.isNotEmpty) {
+        imageUrl = examImageUrlController.text;
+      }
+
       final exam = ExamModel(
-        id: '',
+        id: examId,
         courseId: courseNotifier.value!.id,
         title: examTitleController.text,
         description: examDescriptionController.text,
         timeLimit: int.parse(examDurationController.text) * 60,
-        imageUrl: examImageUrlController.text.isEmpty
-            ? null
-            : examImageUrlController.text,
+        imageUrl: imageUrl,
         questions: questions.asMap().entries.map((entry) {
           final index = entry.key;
           final question = entry.value;
@@ -76,8 +123,7 @@ class _AddExamUIViewState extends State<AddExamUIView> {
             );
           }
 
-          final questionId =
-              DateTime.now().millisecondsSinceEpoch.toString() + '_$index';
+          final questionId = '${examId}_$index';
 
           final choices = List.generate(
             4,
@@ -162,30 +208,46 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'Add Exam',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     CoursePicker(
                       controller: courseController,
                       notifier: courseNotifier,
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
+                    TitledInputField(
                       controller: examTitleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Exam Title',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter exam title';
-                        }
-                        return null;
-                      },
+                      title: 'Exam Title',
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: examDescriptionController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Exam Description',
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.blue.shade300),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
                       ),
                       maxLines: 3,
                       validator: (value) {
@@ -195,15 +257,32 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 10),
-                    TextFormField(
+                    const SizedBox(height: 20),
+                    TitledInputField(
                       controller: examImageUrlController,
-                      decoration: const InputDecoration(
-                        labelText: 'Exam Image URL (Optional)',
-                        border: OutlineInputBorder(),
+                      title: 'Exam Image',
+                      required: false,
+                      hintText: 'Enter Image URL or pick from gallery',
+                      hintStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          final image = await CoreUtils.pickImage();
+                          if (image != null) {
+                            setState(() {
+                              isFile = true;
+                              imageFile = image;
+                              final imageName = image.path.split('/').last;
+                              examImageUrlController.text = imageName;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.add_photo_alternate_outlined),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: examDurationController,
                       decoration: const InputDecoration(
@@ -258,36 +337,18 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              TextFormField(
+                              TitledInputField(
                                 controller: questionControllers[index],
-                                decoration: const InputDecoration(
-                                  labelText: 'Question Text',
-                                  border: OutlineInputBorder(),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter question text';
-                                  }
-                                  return null;
-                                },
+                                title: 'Question Text',
                               ),
                               const SizedBox(height: 10),
                               ...List.generate(4, (i) {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
-                                  child: TextFormField(
+                                  child: TitledInputField(
                                     controller: choiceControllers[index][i],
-                                    decoration: InputDecoration(
-                                      labelText:
-                                          'Choice ${String.fromCharCode(65 + i)}',
-                                      border: const OutlineInputBorder(),
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter choice text';
-                                      }
-                                      return null;
-                                    },
+                                    title:
+                                        'Choice ${String.fromCharCode(65 + i)}',
                                   ),
                                 );
                               }),
@@ -327,21 +388,47 @@ class _AddExamUIViewState extends State<AddExamUIView> {
                       );
                     }).toList(),
                     const SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: addQuestion,
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add Question'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: addQuestion,
+                            icon: const Icon(Icons.add),
+                            label: const Text('Add Question'),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: uploadExam,
-                        child: const Text('Upload Exam'),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Colors.grey.shade200,
+                              foregroundColor: Colors.grey.shade800,
+                            ),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: uploadExam,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Upload Exam'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
