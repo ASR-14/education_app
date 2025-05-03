@@ -53,16 +53,18 @@ class _AddCourseSheetState extends State<AddCourseSheet> {
         if (state is CourseError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is AddingCourses) {
-          loading = true;
+          setState(() {
+            loading = true;
+          });
           CoreUtils.showLoadingDialog(context);
         } else if (state is CourseAdded) {
-          loading = false;
+          setState(() {
+            loading = false;
+          });
+          Navigator.pop(context);
+          CoreUtils.showSnackBar(context, 'Course added successfully');
           Navigator.pop(context);
         }
-        CoreUtils.showSnackBar(context, 'Course added successfully');
-        Navigator.pop(context);
-        // CoreUtils.showLoadingDialog(context);
-        // TODO(Add-Course): Send Notifications
       },
       child: Padding(
         padding: EdgeInsets.only(
