@@ -52,7 +52,7 @@ class _AddCourseSheetState extends State<AddCourseSheet> {
       listener: (_, state) {
         if (state is CourseError) {
           CoreUtils.showSnackBar(context, state.message);
-        } else if (state is AddingCourses) {
+        } else if (state is AddingCourse) {
           setState(() {
             loading = true;
           });

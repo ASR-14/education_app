@@ -4,7 +4,7 @@ import 'package:education_app/core/utils/typedefs.dart';
 abstract class CourseRepo {
   const CourseRepo();
 
-  Stream<List<Course>> getCourses();
+  ResultStream<List<Course>> getCourses();
 
   ResultFuture<void> addCourse(Course course);
 }

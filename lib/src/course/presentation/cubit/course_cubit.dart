@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
+import 'package:education_app/core/errors/failures.dart';
 import 'package:education_app/src/course/domain/entities/course.dart';
 import 'package:education_app/src/course/domain/usecases/add_course.dart';
 import 'package:education_app/src/course/domain/usecases/get_courses.dart';
@@ -8,30 +12,41 @@ part 'course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
   CourseCubit({
-    required AddCourse addCourse,
     required GetCourses getCourses,
-  })  : _addCourse = addCourse,
-        _getCourses = getCourses,
-        super(const CourseInitial()) {
-    getCourses();
-  }
+    required AddCourse addCourse,
+  })  : _getCourses = getCourses,
+        _addCourse = addCourse,
+        super(const CourseInitial());
 
-  final AddCourse _addCourse;
   final GetCourses _getCourses;
-
-  void getCourses() {
-    _getCourses().listen(
-      (List<Course> courses) => emit(CoursesLoaded(courses)),
-      onError: (error) => emit(CourseError(error.toString())),
-    );
-  }
+  final AddCourse _addCourse;
 
   Future<void> addCourse(Course course) async {
-    emit(const AddingCourses());
+    emit(const AddingCourse());
     final result = await _addCourse(course);
     result.fold(
       (failure) => emit(CourseError(failure.errorMessage)),
       (_) => emit(const CourseAdded()),
+    );
+  }
+
+  void getCourses() {
+    emit(const LoadingCourses());
+
+    StreamSubscription<Either<Failure, List<Course>>>? subscription;
+
+    subscription = _getCourses().listen(
+      (result) {
+        result.fold(
+          (failure) => emit(CourseError(failure.errorMessage)),
+          (courses) => emit(CoursesLoaded(courses)),
+        );
+      },
+      onError: (dynamic error) {
+        emit(CourseError(error.toString()));
+        subscription?.cancel();
+      },
+      onDone: () => subscription?.cancel(),
     );
   }
 }
