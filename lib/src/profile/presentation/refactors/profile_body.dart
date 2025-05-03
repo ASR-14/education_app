@@ -102,7 +102,7 @@ class ProfileBody extends StatelessWidget {
                     useSafeArea: true,
                     builder: (_) => MultiBlocProvider(
                       providers: [
-                        BlocProvider(create: (_) => sl<CourseCubit>()),
+                        BlocProvider.value(value: sl<CourseCubit>()),
                         BlocProvider(create: (_) => sl<NotificationCubit>()),
                       ],
                       child: const AddCourseSheet(),

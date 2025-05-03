@@ -12,10 +12,19 @@ class CourseCubit extends Cubit<CourseState> {
     required GetCourses getCourses,
   })  : _addCourse = addCourse,
         _getCourses = getCourses,
-        super(const CourseInitial());
+        super(const CourseInitial()) {
+    getCourses();
+  }
 
   final AddCourse _addCourse;
   final GetCourses _getCourses;
+
+  void getCourses() {
+    _getCourses().listen(
+      (List<Course> courses) => emit(CoursesLoaded(courses)),
+      onError: (error) => emit(CourseError(error.toString())),
+    );
+  }
 
   Future<void> addCourse(Course course) async {
     emit(const AddingCourses());
@@ -23,15 +32,6 @@ class CourseCubit extends Cubit<CourseState> {
     result.fold(
       (failure) => emit(CourseError(failure.errorMessage)),
       (_) => emit(const CourseAdded()),
-    );
-  }
-
-  Future<void> getCourses() async {
-    emit(const LoadingCourses());
-    final result = await _getCourses();
-    result.fold(
-      (failure) => emit(CourseError(failure.errorMessage)),
-      (courses) => emit(CoursesLoaded(courses)),
     );
   }
 }

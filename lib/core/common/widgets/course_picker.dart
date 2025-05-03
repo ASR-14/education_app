@@ -87,7 +87,7 @@ class _CoursePickerState extends State<CoursePicker> {
                   ),
           ),
           validator: (value) {
-            if(value == null || value.isEmpty) {
+            if (value == null || value.isEmpty) {
               return 'Please pick a course';
             }
             return null;

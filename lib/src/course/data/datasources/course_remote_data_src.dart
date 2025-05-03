@@ -11,7 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sp;
 
 abstract class CourseRemoteDataSrc {
   const CourseRemoteDataSrc();
-  Future<List<CourseModel>> getCourses();
+  Stream<List<CourseModel>> getCourses();
 
   Future<void> addCourse(Course course);
 }
@@ -89,7 +89,7 @@ class CourseRemoteDataSrcImpl implements CourseRemoteDataSrc {
   }
 
   @override
-  Future<List<CourseModel>> getCourses() async {
+  Stream<List<CourseModel>> getCourses() {
     try {
       final user = _auth.currentUser;
       if (user == null) {
@@ -98,16 +98,16 @@ class CourseRemoteDataSrcImpl implements CourseRemoteDataSrc {
           statusCode: '401',
         );
       }
-      return _firestore.collection('courses').get().then((value) {
-        return value.docs.map((e) => CourseModel.fromMap(e.data())).toList();
+      return _firestore.collection('courses').snapshots().map((snapshot) {
+        return snapshot.docs
+            .map((doc) => CourseModel.fromMap(doc.data()))
+            .toList();
       });
     } on FirebaseException catch (e) {
       throw ServerException(
-        message: e.message ?? 'Unknow error occurred',
+        message: e.message ?? 'Unknown error occurred',
         statusCode: e.code,
       );
-    } on ServerException {
-      rethrow;
     } catch (e) {
       throw ServerException(message: e.toString(), statusCode: '505');
     }

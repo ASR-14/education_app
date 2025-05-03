@@ -63,6 +63,7 @@ class _AddCourseSheetState extends State<AddCourseSheet> {
           });
           Navigator.pop(context);
           CoreUtils.showSnackBar(context, 'Course added successfully');
+          // context.read<CourseCubit>().getCourses();
           Navigator.pop(context);
         }
       },

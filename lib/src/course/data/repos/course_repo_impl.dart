@@ -22,12 +22,11 @@ class CourseRepoImpl implements CourseRepo {
   }
 
   @override
-  ResultFuture<List<Course>> getCourses() async {
+  Stream<List<Course>> getCourses() {
     try {
-      final courses = await _remoteDataSrc.getCourses();
-      return Right(courses);
+      return _remoteDataSrc.getCourses();
     } on ServerException catch (e) {
-      return Left(ServerFailure.fromException(e));
+      throw ServerFailure.fromException(e);
     }
   }
 }
