@@ -19,7 +19,7 @@ A modern Flutter-based education platform that provides an interactive learning 
   - Real-time chat functionality
   - Group discussions
   - File sharing capabilities
-  - Progress tracking
+  - Exam
 
 - **User Experience**
   - Modern and intuitive UI
@@ -107,11 +107,3 @@ lib/
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-For any queries or support, please reach out to [your-email@example.com](mailto:your-email@example.com)
