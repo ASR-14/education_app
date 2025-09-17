@@ -75,9 +75,6 @@ lib/
   - Equatable for value equality
   - Freezed for code generation
 
-## 📱 Screenshots
-
-[Add screenshots here]
 
 ## 🚀 Getting Started
 
